@@ -118,11 +118,11 @@
   * 这个组合已经很少用（在某些版本中已经废弃）
   * https://stackoverflow.com/questions/34962257/why-remove-support-for-parnewserialold-anddefnewcms-in-the-future
 * -XX:+UseConc<font color=red>(urrent)</font>MarkSweepGC = ParNew + CMS + Serial Old
-* -XX:+UseParallelGC = Parallel Scavenge + Parallel Old (1.8默认) 【PS + SerialOld】
+* -XX:+UseParallelGC = Parallel Scavenge + SerialOld(1.8默认) 【PS + SerialOld】
 * -XX:+UseParallelOldGC = Parallel Scavenge + Parallel Old
 * -XX:+UseG1GC = G1
 * Linux中没找到默认GC的查看方法，而windows中会打印UseParallelGC 
-  * java +XX:+PrintCommandLineFlags -version
+  * java -XX:+PrintCommandLineFlags -version
   * 通过GC的日志来分辨
 
 * Linux下1.8版本默认的垃圾回收器到底是什么？
@@ -232,6 +232,13 @@ total = eden + 1个survivor
   5. 设定年代大小、升级年龄
   6. 设定日志参数
      1. -Xloggc:/opt/xxx/logs/xxx-xxx-gc-%t.log -XX:+UseGCLogFileRotation -XX:NumberOfGCLogFiles=5 -XX:GCLogFileSize=20M -XX:+PrintGCDetails -XX:+PrintGCDateStamps -XX:+PrintGCCause
+     
+        > 指定的日志路径必须手动去创建目录！
+     
+        > windows下例子
+        >
+        > java -jar -Xms1024m -Xmx1024m -XX:+PrintCommandLineFlags -Xloggc:D:\log\gclogs\%date:~0,4%%date:~5,2%%date:~8,2%.log -XX:+UseGCLogFileRotation -XX:NumberOfGCLogFiles=5 -XX:GCLogFileSize=10K -XX:+PrintGCDetails -XX:+PrintGCDateStamps -XX:+PrintGCCause -XX:+UseG1GC
+     
      2. 或者每天产生一个日志文件
   7. 观察日志情况
   
